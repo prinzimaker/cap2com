@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: Trova i comuni partendo dal CAP
+  description: This is a simple API
+  contact:
+    email: aldo@milleisole.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/MILLE_ISOLE/cap2com/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://comuni.milleisole.com/cap2com/1.0.0
+  description: Mille Isole test place
+tags:
+- name: developers
+  description: Operations available to regular developers
+paths:
+  /comuni:
+    get:
+      tags:
+      - developers
+      summary: cerca i comuni
+      description: |
+        Passando il codice CAP italiano, otterrai una lista di comuni
+      operationId: comFind
+      parameters:
+      - name: cap
+        in: query
+        description: invia il CAP
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: token
+        in: query
+        description: il token di sicurezza
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: risultato della ricerca
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComuniItem'
+        "400":
+          description: bad input parameter
+components:
+  schemas:
+    ComuniItem:
+      required:
+      - cap
+      type: object
+      properties:
+        cap:
+          type: string
+          example: "90147"
+        nome:
+          type: string
+          example: Palermo
+        prov:
+          type: string
+          example: PA
+        nomeProv:
+          type: string
+          example: Palermo
+        nomeRegione:
+          type: string
+          example: Sicilia
+        is_capo:
+          type: integer
+          example: 1
